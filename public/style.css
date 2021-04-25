@@ -1,0 +1,59 @@
+
+body {
+  font-family: sans-serif;
+}
+
+label {
+  padding-top: 10px;
+}
+
+code {
+  background-color: lightgrey;
+  border: 1px gray solid;
+  border-radius: 2px;
+  display: block
+}
+
+video {
+  max-width: 100%;
+  margin: 0 auto;
+  display: block;
+}
+
+.date {
+  color: gray;
+}
+
+.footer {
+  position:absolute;
+  bottom:0;
+  width: 500px;
+  height:10em;
+  text-align: center;
+}
+
+.main {
+  max-width: 500px;
+  margin: auto;
+}
+
+.videos {
+  max-width: 500px;
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  grid-gap: 10px;
+  padding: 10px;
+}
+
+.video {
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+.thumb {
+  border: 2px black solid;
+}
+
+span {
+  max-width: 100%;
+}

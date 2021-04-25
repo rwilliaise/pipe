@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<head>
+
+  <head>
+    <link rel="stylesheet" href="/style.css" />
+
+    <script>
+      function verify() {
+        let password = prompt('Enter password...')
+
+        fetch("/api/videos/<%= video.video_id %>", {
+          method: "post",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+
+          body: JSON.stringify({
+            auth: password
+          })
+        })
+          .then(async (response) => {
+            const text = await response.text()
+            alert(text)
+          });
+      }
+    </script>
+  </head>
+
+<body>
+  <div class="main">
+    <%- include('partials/navbar.ejs') %>
+
+      <video controls>
+        <source src="/videos/<%= video.video_id %>.mp4" type="video/mp4">
+        your browser does not support video tags
+      </video>
+      <h3>
+        <%= video.video_name %>
+      </h3>
+      <p>
+        <%= video.video_description %>
+      </p>
+
+      <div class="footer">
+
+        <h4 class="date">
+          <% let newDate=new Date(video.video_date) %>
+            <% let monthNames=["January", "February" , "March" , "April" , "May" , "June" , "July" , "August"
+              , "September" , "October" , "November" , "December" ] %>
+              <%= `${monthNames[newDate.getMonth()]} ${newDate.getDate()}, ${newDate.getFullYear()}` %>
+        </h4>
+        <a href="#" onclick="verify()">delete video</a></a>
+      </div>
+  </div>
+</body>
+</head>

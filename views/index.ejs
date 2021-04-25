@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+  <div class="main">
+    <%- include('partials/navbar.ejs') %>
+      <script>
+        window.onload = () => {
+          let videosElement = document.getElementById('videos')
+
+          function generateVideo(videoObject) {
+            let divElement = document.createElement('div')
+            let thumbElement = document.createElement('img')
+            let nameElement = document.createElement('a')
+            let nameSpanElement = document.createElement('span')
+            let dateSpanElement = document.createElement('span')
+            thumbElement.className = "thumb"
+            thumbElement.src = videoObject.video_thumb
+            thumbElement.width = 150
+            thumbElement.height = 100
+            nameSpanElement.textContent = videoObject.video_name
+            nameElement.href = `/v/${videoObject.video_id}`
+            nameElement.appendChild(thumbElement)
+            nameElement.appendChild(document.createElement('br'))
+            nameElement.appendChild(nameSpanElement)
+            let date = new Date(videoObject.video_date)
+            dateSpanElement.textContent = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
+            divElement.appendChild(nameElement)
+            divElement.appendChild(document.createElement('br'))
+            divElement.appendChild(dateSpanElement)
+            divElement.className = "video"
+            videosElement.appendChild(divElement)
+          }
+
+          async function refreshVideos() {
+            videosElement.innerHTML = ''
+            let response = await fetch('/api/videos')
+            let data = await response.json()
+            for (let video of data) {
+              console.log(video)
+              generateVideo(video)
+            }
+          }
+
+          refreshVideos()
+        }
+      </script>
+      <div id="videos" class="videos"></div>
+  </div>
+</body>
+
+</html>

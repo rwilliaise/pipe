@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<head>
+
+  <head>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+
+<body>
+  <div class="main">
+    <%- include('partials/navbar.ejs') %>
+      <h2>Pipe API</h2>
+      <p>By default there is a rate limit of 200 requests per hour imposed on all API requests.</p>
+      <ol>
+        <li>
+          <pre>GET /api/videos</pre>
+          <p>
+            Gets all videos in the database. Returns the video database.
+            TODO: this is insecure
+          </p>
+        </li>
+        <li>
+          <pre>DELETE /api/videos/:id</pre>
+          <p>
+            Delete a video at a given id. Requires administrator password.
+          </p>
+        </li>
+        <li>
+          <pre>POST /api/videos</pre>
+          <p>
+            Uploads a video, and auto generates a thumbnail. Does not require authorization.
+
+            Example request body:
+          </p>
+          <pre><code>
+  {
+    "video": file.mp4,
+    "name": "Hello, world!",
+    "description": "This is a test request!",
+    "password": "example password"
+  }
+            </code>
+          </pre>
+        </li>
+      </ol>
+  </div>
+</body>
+</head>

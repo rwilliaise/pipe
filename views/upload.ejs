@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<head>
+
+  <head>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+
+<body>
+  <div class="main">
+    <%- include('partials/navbar.ejs') %>
+      <div>
+        <form action="/api/videos" method="POST" encType="multipart/form-data">
+          <label for="video">Choose video file... </label>
+          <input type="file" name="video" id="video" accept="video/*" required>
+          <br>
+          <label for="name">Name: </label>
+          <br>
+          <input type="text" name="name" id="name" size="30" maxlength="30" autocomplete="off" placeholder="enter name"
+            required>
+          <br>
+          <label for="description">Description: </label>
+          <br>
+          <textarea name="description" id="description" cols="30" rows="5" autocomplete="off"
+            placeholder="enter description" wrap="soft" maxlength="200"></textarea>
+          <br>
+          <label for="password">Password (for deletion and editing): </label>
+          <br>
+          <input type="password" name="password" id="password" size="30" autocomplete="on" placeholder="enter password"
+            required>
+          <br>
+          <input type="submit" value="Upload">
+        </form>
+        <p>by pressing the upload button, you are agreeing to the <a href="/tos">terms of service</a></p>
+      </div>
+  </div>
+</body>
+</head>
