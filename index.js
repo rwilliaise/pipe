@@ -95,7 +95,7 @@ app.post('/api/videos',
       res.status(400).send('Invalid video given! Must be mp4')
       return
     }
-    if (req.files.video.size > 10_000_000) {
+    if (req.files.video.size > 10000000) {
       res.status(400).send('Video too large! 10 mb or less, punk.')
       return
     }
