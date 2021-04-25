@@ -126,7 +126,8 @@ app.get("/about", (req, res) => {
   res.render("about");
 });
 
-app.listen(27015, () => {
+const PORT = process.env.PORT
+app.listen(PORT, () => {
   let pathVideos = path.join(__dirname, "public", "videos");
   if (!fs.existsSync(pathVideos)) {
     fs.mkdir(pathVideos, err => {
