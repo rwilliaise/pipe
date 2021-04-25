@@ -1,0 +1,28 @@
+{
+  "name": "pipe",
+  "version": "1.0.0",
+  "description": "A video sharing service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "pipe"
+  },
+  "author": "rwilliaise",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.11",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "ejs": "^3.1.6",
+    "entropy-string": "^4.2.0",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "fluent-ffmpeg": "^2.1.2",
+    "multer": "^1.4.2",
+    "nedb": "^1.8.0"
+  }
+}

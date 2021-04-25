@@ -1,0 +1,30 @@
+
+label {
+  padding-top: 10px;
+}
+
+.main {
+  max-width: 500px;
+  margin: auto;
+}
+
+.videos {
+  max-width: 500px;
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  grid-gap: 10px;
+  padding: 10px;
+}
+
+.video {
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+.thumb {
+  border: 2px black solid;
+}
+
+span {
+  max-width: 100%;
+}

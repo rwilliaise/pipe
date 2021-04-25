@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<head>
+
+  <head>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+
+<body>
+  <div class="main">
+    <%- include('partials/navbar.ejs') %>
+
+      <video width="320" height="240" controls>
+        <source src="/videos/<%= id %>.mp4" type="video/mp4">
+        your browser does not support video tags
+      </video>
+  </div>
+</body>
+</head>
