@@ -28,7 +28,8 @@
             nameElement.appendChild(document.createElement('br'))
             nameElement.appendChild(nameSpanElement)
             let date = new Date(videoObject.video_date)
-            dateSpanElement.textContent = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
+            let percentage = videoObject.video_likes / ((videoObject.video_dislikes + videoObject.video_likes) || 1)
+            dateSpanElement.textContent = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()} | ${percentage * 100}%`
             divElement.appendChild(nameElement)
             divElement.appendChild(document.createElement('br'))
             divElement.appendChild(dateSpanElement)

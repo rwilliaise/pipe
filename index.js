@@ -15,10 +15,19 @@ const createThumbnail = require('./thumb')
 
 const app = express()
 
-
 const apiLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 200
+});
+
+function keyGen(req) {
+  return req.ip + req.params.id
+}
+
+const voteLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 1,
+  keyGenerator: keyGen
 });
 
 app.use("/api/", apiLimiter);
@@ -69,18 +78,41 @@ app.get('/video', (req, res) => {
 })
 
 app.get('/api/videos', (req, res) => {
-  database.find({ type: 'video' }, (err, data) => {
+  database.find({ type: 'video' }).sort({ video_relevance: 1 }).limit(10).exec((err, docs) => {
     if (err) {
-      res.end();
-      return;
+      res.status(500).send(err)
+      return
     }
-    let out = []
-    for (let video of data) {
-      out.push({ video_thumb: video.video_thumb, video_date: video.video_date, video_name: video.video_name, video_id: video.video_id })
+    let out = [];
+    for (let video of docs) {
+      out.push({
+        video_id: video.video_id,
+        video_thumb: video.video_thumb,
+        video_name: video.video_name,
+        video_date: video.video_date,
+        video_likes: video.video_likes,
+        video_dislikes: video.video_dislikes
+      })
     }
-    res.json(out);
+    res.json(out)
   })
 })
+
+app.post('/api/videos/like/:id',
+  voteLimiter,
+  param('id').isString().isLength({ max: 12, min: 12 }).withMessage('Video not found'),
+  (req, res) => {
+    database.update({ video_id: req.params.id }, { $inc: { video_relevance: 1, video_likes: 1 } })
+    res.status(200).send('Success')
+  })
+
+app.post('/api/videos/dislike/:id',
+  voteLimiter,
+  param('id').isString().isLength({ max: 12, min: 12 }).withMessage('Video not found'),
+  (req, res) => {
+    database.update({ video_id: req.params.id }, { $inc: { video_relevance: -1, video_dislikes: 1 } })
+    res.status(200).send('Success')
+  })
 
 app.post('/api/videos',
   body('name').isString().isLength({ min: 1, max: 30 }).trim().escape().withMessage('Name must be non-empty and less than 30 chars!'),
@@ -116,8 +148,10 @@ app.post('/api/videos',
         video_date: Date.now(),
         video_thumb: thumbnail,
         video_description: (data.description || '').slice(0, 200),
-        video_name: data.name,
-        video_relevance: 10,
+        video_name: data.name.slice(0, 30),
+        video_relevance: 25,
+        video_likes: 0,
+        video_dislikes: 0,
         video_password: encrypted
       })
       res.redirect('/upload')
@@ -245,3 +279,13 @@ app.listen(PORT, () => {
     })
   }
 })
+
+setInterval(() => {
+  database.update({ type: 'video' }, { $inc: { video_relevance: -1 } }, { multi: true }, (err, n) => {
+    if (err) {
+      console.log(err)
+      return
+    }
+    console.log(`${n} videos updated`)
+  })
+}, 60 * 1000)
