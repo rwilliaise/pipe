@@ -21,11 +21,11 @@ const apiLimiter = rateLimit({
 });
 
 function keyGen(req) {
-  return req.ip + req.params.id
+  return req.connection.remoteAddress + req.params.id
 }
 
 const voteLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
+  windowMs: 15 * 60 * 1000,
   max: 1,
   keyGenerator: keyGen
 });
@@ -78,7 +78,7 @@ app.get('/video', (req, res) => {
 })
 
 app.get('/api/videos', (req, res) => {
-  database.find({ type: 'video' }).sort({ video_relevance: 1 }).limit(10).exec((err, docs) => {
+  database.find({ type: 'video' }).sort({ video_relevance: -1 }).limit(12).exec((err, docs) => {
     if (err) {
       res.status(500).send(err)
       return
@@ -91,7 +91,8 @@ app.get('/api/videos', (req, res) => {
         video_name: video.video_name,
         video_date: video.video_date,
         video_likes: video.video_likes,
-        video_dislikes: video.video_dislikes
+        video_dislikes: video.video_dislikes,
+        video_relevance: video.video_relevance
       })
     }
     res.json(out)
@@ -102,7 +103,7 @@ app.post('/api/videos/like/:id',
   voteLimiter,
   param('id').isString().isLength({ max: 12, min: 12 }).withMessage('Video not found'),
   (req, res) => {
-    database.update({ video_id: req.params.id }, { $inc: { video_relevance: 1, video_likes: 1 } })
+    database.update({ video_id: req.params.id }, { $inc: { video_relevance: 5, video_likes: 1 } })
     res.status(200).send('Success')
   })
 
@@ -110,7 +111,7 @@ app.post('/api/videos/dislike/:id',
   voteLimiter,
   param('id').isString().isLength({ max: 12, min: 12 }).withMessage('Video not found'),
   (req, res) => {
-    database.update({ video_id: req.params.id }, { $inc: { video_relevance: -1, video_dislikes: 1 } })
+    database.update({ video_id: req.params.id }, { $inc: { video_relevance: -2, video_dislikes: 1 } })
     res.status(200).send('Success')
   })
 
@@ -280,12 +281,13 @@ app.listen(PORT, () => {
   }
 })
 
+database.persistence.setAutocompactionInterval(5 * 60000)
+
 setInterval(() => {
   database.update({ type: 'video' }, { $inc: { video_relevance: -1 } }, { multi: true }, (err, n) => {
     if (err) {
       console.log(err)
       return
     }
-    console.log(`${n} videos updated`)
   })
 }, 60 * 1000)

@@ -82,7 +82,8 @@
         <a href="#" onclick="verify()">delete video</a>
         <br>
         <br>
-        <a href="#" onclick="upvote()">like!</a> | <a href="#" onclick="downvote()">dislike!</a>
+        <a href="#" onclick="upvote()">like (<%= video.video_likes || 0 %>)!</a> | <a href="#"
+          onclick="downvote()">dislike (<%= video.video_dislikes || 0 %>)!</a>
       </div>
   </div>
 </body>
