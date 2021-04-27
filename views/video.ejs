@@ -11,7 +11,7 @@
       function verify() {
         let password = prompt('Enter password...')
 
-        fetch("/api/videos/<%= video.video_id %>", {
+        fetch("/api/videos/delete/<%= video.video_id %>", {
           method: "post",
           headers: {
             'Accept': 'application/json',

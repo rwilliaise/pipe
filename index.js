@@ -116,7 +116,7 @@ app.post('/api/videos/dislike/:id',
     res.status(200).send('Success')
   })
 
-app.post('/api/videos',
+app.post('/api/videos/upload',
   body('name').isString().isLength({ min: 1, max: 30 }).trim().escape().withMessage('Name must be non-empty and less than 30 chars!'),
   body('description').isString().trim().escape(),
   body('password').not().isEmpty().isStrongPassword().withMessage('Password must be strong!'),
@@ -164,7 +164,7 @@ app.post('/api/videos',
     })
   })
 
-app.post('/api/videos/:id',
+app.post('/api/videos/delete/:id',
   body('auth').isString().not().isEmpty().withMessage('Authentication must be provided'),
   param('id').isString().isLength({ max: 12, min: 12 }).withMessage('Video not found'),
   (req, res) => {
