@@ -1,8 +1,10 @@
-const ffmpeg = require('fluent-ffmpeg')
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffmpeg = require('fluent-ffmpeg');
+ffmpeg.setFfmpegPath(ffmpegPath);
 const path = require('path')
 
 module.exports = (videoFile, videoId) => {
-  new ffmpeg(videoFile)
+  ffmpeg(videoFile)
     .takeScreenshots(
       {
         count: 1,

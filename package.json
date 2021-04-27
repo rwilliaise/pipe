@@ -18,6 +18,7 @@
   "author": "rwilliaise",
   "license": "ISC",
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.0.20",
     "@types/express": "^4.17.11",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
@@ -34,5 +35,8 @@
     "video.js": "^7.11.8",
     "videojs-contrib-quality-levels": "^2.1.0",
     "videojs-hls-quality-selector": "^1.1.4"
+  },
+  "devDependencies": {
+    "browserify": "^17.0.0"
   }
 }

@@ -1,22 +1,24 @@
-const ffmpeg = require('fluent-ffmpeg')
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffmpeg = require('fluent-ffmpeg');
+ffmpeg.setFfmpegPath(ffmpegPath);
 const path = require('path')
 
 module.exports = (videoFile, videoId) => {
   console.log(path.join(__dirname, 'public', 'videos', videoId, 'master.m3u8'))
   ffmpeg(videoFile)
     .outputOptions([
-      '-preset ultrafast', 
-      '-g 50', 
+      '-preset ultrafast',
+      '-g 50',
       '-sc_threshold 0',
-      '-map 0:0', 
+      '-map 0:0',
       '-map 0:1',
-      '-map 0:0', 
+      '-map 0:0',
       '-map 0:1',
-      '-map 0:0', 
+      '-map 0:0',
       '-map 0:1',
-      '-map 0:0', 
+      '-map 0:0',
       '-map 0:1',
-      '-s:v:0 640x360', 
+      '-s:v:0 640x360',
       '-c:v:0 libx264',
       '-b:v:0 800k',
       '-b:a:0 96k',
