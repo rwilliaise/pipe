@@ -6,9 +6,9 @@ module.exports = (videoFile, videoId) => {
     .takeScreenshots(
       {
         count: 1,
-        filename: `${videoId}.png`
+        filename: `thumb.png`
       },
-      path.join(__dirname, 'public', 'thumb')
+      path.join(__dirname, 'public', 'videos', videoId)
     )
-  return `/thumb/${videoId}.png`
+  return `/videos/${videoId}/thumb.png`
 }

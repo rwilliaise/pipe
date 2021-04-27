@@ -15,9 +15,12 @@ code {
 }
 
 video {
-  max-width: 100%;
   margin: 0 auto;
   display: block;
+}
+
+.videoContainer {
+  max-width: 800px;
 }
 
 .date {

@@ -3,6 +3,8 @@
 <head>
 
   <head>
+    <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
+    
     <link rel="stylesheet" href="/style.css" />
 
     <script>
@@ -60,10 +62,13 @@
   <div class="main">
     <%- include('partials/navbar.ejs') %>
 
-      <video controls>
-        <source src="/videos/<%= video.video_id %>.mp4" type="video/mp4">
-        your browser does not support video tags
-      </video>
+      <div align="center">
+        <video height="500" class="video-js" data-setup='{}' controls>
+          <source src="/videos/<%= video.video_id %>/master.m3u8" type="application/x-mpegURL">
+          <source src="/videos/<%= video.video_id %>/video.mp4" type="video/mp4">
+          your browser does not support video tags
+        </video>
+      </div>
       <h3>
         <%= video.video_name %>
       </h3>
@@ -86,5 +91,6 @@
           onclick="downvote()">dislike (<%= video.video_dislikes || 0 %>)!</a>
       </div>
   </div>
+  <script src="/video.js"></script>
 </body>
 </head>

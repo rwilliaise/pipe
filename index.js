@@ -12,6 +12,7 @@ const { hash, compare } = require('bcrypt')
 const { body, param } = require('express-validator')
 
 const createThumbnail = require('./thumb')
+const createHLS = require('./compile')
 
 const app = express()
 
@@ -134,9 +135,13 @@ app.post('/api/videos',
     }
     const data = req.body
     const id = getUnusedId()
-    const filePath = path.join(__dirname, 'public', 'videos', id + ".mp4")
+    const videoPath = path.join(__dirname, 'public', 'videos', id)
+    fs.mkdirSync(videoPath)
+    const filePath = path.join(videoPath, 'video.mp4')
     req.files.video.mv(filePath)
+
     const thumbnail = createThumbnail(filePath, id)
+    const m3u8 = createHLS(filePath, id)
     hash(data.password, 10, (err, encrypted) => {
       if (err) {
         res.status(500).send('Failed to encrypt password!')
@@ -177,29 +182,28 @@ app.post('/api/videos/:id',
         res.status(404).send('Video not found')
         return
       }
-      if (data.auth === 'verylongandcooladminpasswordlol') {
-        const videoPath = path.join(__dirname, 'public', 'videos', `${req.params.id}.mp4`)
-        const thumbPath = path.join(__dirname, 'public', 'thumb', `${req.params.id}.png`)
-        if (!fs.existsSync(videoPath)) {
-          res.status(404).send('Video not found')
-          return
-        }
-        database.remove({ video_id: req.params.id })
-        if (fs.existsSync(thumbPath)) {
-          fs.rmSync(thumbPath)
-        }
-        fs.rmSync(videoPath)
-        res.status(200).send('Success')
-        return
-      }
+      // if (data.auth === '') {
+      //   const videoPath = path.join(__dirname, 'public', 'videos', `${req.params.id}.mp4`)
+      //   const thumbPath = path.join(__dirname, 'public', 'thumb', `${req.params.id}.png`)
+      //   if (!fs.existsSync(videoPath)) {
+      //     res.status(404).send('Video not found')
+      //     return
+      //   }
+      //   database.remove({ video_id: req.params.id })
+      //   if (fs.existsSync(thumbPath)) {
+      //     fs.rmSync(thumbPath)
+      //   }
+      //   fs.rmSync(videoPath)
+      //   res.status(200).send('Success')
+      //   return
+      // }
       compare(data.auth, doc.video_password, (hashError, status) => {
         if (hashError) {
           res.status(500).send('Password authentication failure, please try again later')
           return
         }
         if (status) {
-          const videoPath = path.join(__dirname, 'public', 'videos', `${req.params.id}.mp4`)
-          const thumbPath = path.join(__dirname, 'public', 'thumb', `${req.params.id}.png`)
+          const videoPath = path.join(__dirname, 'public', 'videos', req.params.id)
           if (!fs.existsSync(videoPath)) {
             res.status(404).send('Video not found')
             return
@@ -208,12 +212,9 @@ app.post('/api/videos/:id',
             if (err) {
               console.log(err)
             }
-            console.log(`${del} videos deleted`)
+            console.log(`${del} video deleted`)
           })
-          if (fs.existsSync(thumbPath)) {
-            fs.rmSync(thumbPath)
-          }
-          fs.rmSync(videoPath)
+          fs.rmdirSync(videoPath)
           res.status(200).send('Success')
         } else {
           res.status(403).send('Invalid password')
@@ -266,14 +267,6 @@ app.listen(PORT, () => {
   let pathVideos = path.join(__dirname, 'public', 'videos')
   if (!fs.existsSync(pathVideos)) {
     fs.mkdir(pathVideos, (err) => {
-      if (err) {
-        return console.error(err);
-      }
-    })
-  }
-  let pathThumbs = path.join(__dirname, 'public', 'thumb')
-  if (!fs.existsSync(pathThumbs)) {
-    fs.mkdir(pathThumbs, (err) => {
       if (err) {
         return console.error(err);
       }
