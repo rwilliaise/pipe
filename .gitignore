@@ -1,6 +1,4 @@
 public/videos
-public/video.js
-public/thumb
 node_modules
 pipe.db
 .DS_Store

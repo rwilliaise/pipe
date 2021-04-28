@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "prestart": "browserify video.js -o public/video.js"
+    "postinstall": "./node_modules/browserify/bin/cmd.js video.js -o public/video.js"
   },
   "repository": {
     "type": "git",
