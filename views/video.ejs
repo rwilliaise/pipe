@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/style.css" />
 
     <script>
-      function verify() {
+/**      function verify() {
         let password = prompt('Enter password...')
 
         fetch("/api/videos/delete/<%= video.video_id %>", {
@@ -27,6 +27,7 @@
             alert(text)
           });
       }
+**/
 
       function upvote() {
         fetch("/api/videos/like/<%= video.video_id %>", {
@@ -84,8 +85,6 @@
               , "September" , "October" , "November" , "December" ] %>
               <%= `${monthNames[newDate.getMonth()]} ${newDate.getDate()}, ${newDate.getFullYear()}` %>
         </h4>
-        <a href="#" onclick="verify()">delete video</a>
-        <br>
         <br>
         <a href="#" onclick="upvote()">like (<%= video.video_likes || 0 %>)!</a> | <a href="#"
           onclick="downvote()">dislike (<%= video.video_dislikes || 0 %>)!</a>
